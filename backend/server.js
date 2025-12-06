@@ -10,10 +10,56 @@ import orderRouter from './routes/orderRoute.js'
 
 const app = express()
 
-// Basic middleware
-app.use(cors())
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+// CORS Configuration
+const allowedOrigins = [
+  'https://nepliz.vercel.app',
+  'http://localhost:3000', // For local development
+  'http://localhost:5173', // Vite dev server
+  // Add other domains if needed
+]
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true)
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.'
+      return callback(new Error(msg), false)
+    }
+    return callback(null, true)
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}))
+
+// OR simpler version if you want to allow all in development:
+// app.use(cors({
+//   origin: process.env.NODE_ENV === 'production' 
+//     ? 'https://nepliz.vercel.app' 
+//     : ['http://localhost:3000', 'http://localhost:5173'],
+//   credentials: true
+// }))
+
+// Handle preflight requests
+app.options('*', cors())
+
+// Middleware
+app.use(express.json({ limit: '10mb' }))
+app.use(express.urlencoded({ extended: true, limit: '10mb' }))
+
+// Initialize connections
+const initializeConnections = async () => {
+  try {
+    await connectDB()
+    await connectCloudinary()
+    console.log('All connections established')
+  } catch (error) {
+    console.error('Connection error:', error)
+    process.exit(1)
+  }
+}
 
 // Routes
 app.use('/api/user', userRouter)
@@ -21,58 +67,32 @@ app.use('/api/product', productRouter)
 app.use('/api/cart', cartRouter)
 app.use('/api/order', orderRouter)
 
-// Health check (important for Vercel)
+// Health check
 app.get('/', (req, res) => {
   res.json({ 
     status: 'API is working',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    cors: 'Configured for: ' + allowedOrigins.join(', ')
   })
-})
-
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK' })
 })
 
 // Error handling
 app.use((err, req, res, next) => {
-  console.error('Error:', err)
-  res.status(500).json({ 
-    error: 'Internal server error',
-    message: process.env.NODE_ENV === 'production' ? null : err.message 
+  console.error(err.stack)
+  res.status(err.status || 500).json({
+    error: err.message || 'Internal Server Error'
   })
 })
 
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({ error: 'Route not found' })
+// Initialize and start
+initializeConnections().then(() => {
+  if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    const PORT = process.env.PORT || 4000
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`)
+      console.log(`CORS enabled for: ${allowedOrigins.join(', ')}`)
+    })
+  }
 })
 
-// Initialize connections and start server
-const startServer = async () => {
-  try {
-    console.log('Connecting to database...')
-    await connectDB()
-    console.log('Database connected successfully')
-    
-    console.log('Connecting to Cloudinary...')
-    await connectCloudinary()
-    console.log('Cloudinary connected successfully')
-    
-    // Only listen if not in Vercel serverless environment
-    if (process.env.VERCEL !== '1') {
-      const PORT = process.env.PORT || 4000
-      app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`)
-      })
-    }
-  } catch (error) {
-    console.error('Failed to start server:', error)
-    process.exit(1)
-  }
-}
-
-// Start the server
-startServer()
-
-// Export for Vercel serverless
 export default app
