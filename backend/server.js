@@ -10,7 +10,8 @@ import orderRouter from './routes/orderRoute.js'
 
 // App Config
 const app = express()
-const port = process.env.PORT || 4000
+// The port variable is no longer necessary for Vercel, but harmless to keep
+const port = process.env.PORT || 4000 
 connectDB()
 connectCloudinary()
 
@@ -24,8 +25,14 @@ app.use('/api/product',productRouter)
 app.use('/api/cart',cartRouter)
 app.use('/api/order',orderRouter)
 
+// Base route test
 app.get('/',(req,res)=>{
     res.send("API Working")
 })
 
-app.listen(port, ()=> console.log('Server started on PORT : '+ port))
+// VERCEL FIX: 
+// 1. We MUST remove the app.listen() block because Vercel handles the server startup.
+// app.listen(port, ()=> console.log('Server started on PORT : '+ port))
+
+// 2. We MUST export the Express app instance so Vercel can run it as a Serverless Function.
+export default app;
