@@ -100,7 +100,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed top-0 left-0 h-full w-3/4 max-w-xs bg-slate-800 text-yellow-700 z-40 flex flex-col items-start gap-6 px-6 pt-20 transition-transform duration-500 ${
+        className={`fixed top-0 left-0 h-full w-3/4 max-w-xs bg-slate-600 text-yellow-700 z-40 flex flex-col items-start gap-6 px-6 pt-20 transition-transform duration-500 ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -109,7 +109,7 @@ const Navbar = () => {
             key={item}
             to={`/${item.toLowerCase()}`}
             onClick={() => setMenuOpen(false)}
-            className="text-lg uppercase font-medium text-black hover:text-yellow-500 transition"
+            className="text-lg uppercase font-medium text-purple-950 hover:text-yellow-500 transition"
           >
             {item}
           </NavLink>
