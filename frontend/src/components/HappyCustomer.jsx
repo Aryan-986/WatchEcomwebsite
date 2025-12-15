@@ -394,17 +394,6 @@ const IndependenceSection = () => {
         </div>
       </div>
 
-      {/* Shopping Cart Indicator (Optional) */}
-      <div className="fixed top-4 right-4 z-20">
-        <div className="relative">
-          <div className="w-12 h-12 bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-full flex items-center justify-center backdrop-blur-sm">
-            <span className="text-xl">🛒</span>
-            <div className="absolute -top-1 -right-1 w-5 h-5 bg-cyan-500 rounded-full flex items-center justify-center">
-              <span className="text-xs text-black font-bold">3</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* CSS Animations */}
       <style jsx>{`

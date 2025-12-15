@@ -1,4 +1,4 @@
-import logo from './logo.png'
+import logo from './logo.jpg'
 import hero_img from './heroon.jpg'
 import cart_icon from './cart_icon.png'
 import bin_icon from './bin_icon.png'

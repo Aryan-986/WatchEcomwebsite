@@ -3,9 +3,9 @@ import { Instagram, MessageCircle, MapPin, Phone, Mail } from 'lucide-react';
 import { assets } from '../assets/assets';
 
 const Footer = () => {
-  const businessWhatsappNumber = '9869220563';
+  const businessWhatsappNumber = '9743935399';
   const businessWhatsappLink = `https://wa.me/${businessWhatsappNumber}`;
-  const devWhatsappNumber = '9869220563';
+  const devWhatsappNumber = '9867378511';
   const devWhatsappLink = `https://wa.me/${devWhatsappNumber}`;
 
   return (
@@ -15,9 +15,9 @@ const Footer = () => {
           
           {/* Company Info */}
           <div className="md:col-span-2">
-            <img src={assets.logo} className='mb-5 w-36' alt="NepalWatch Logo" />
+            <img src={assets.logo} className='mb-5 w-16' alt="Nepliz Store Logo" />
             <p className='w-full text-gray-600 mb-4'>
-              NepalWatch is Nepal's premier destination for luxury, sports, and smart watches. 
+              Nepliz Store is Nepal's premier destination for luxury, sports, and smart watches. 
               We bring you authentic timepieces from global brands along with exclusive 
               traditional Nepali-designed watches crafted by local artisans.
             </p>
@@ -27,11 +27,11 @@ const Footer = () => {
             </div>
             <div className="flex items-center gap-2 text-gray-600 mt-2">
               <Phone className="w-4 h-4" />
-              <span>+9869220563</span>
+              <span>+9743935399</span>
             </div>
             <div className="flex items-center gap-2 text-gray-600 mt-2">
               <Mail className="w-4 h-4" />
-              <span>info@nepalwatch.com</span>
+              <span>info@Nepliz Store.com</span>
             </div>
           </div>
 
@@ -41,7 +41,7 @@ const Footer = () => {
             <ul className='flex flex-col gap-3 text-gray-600'>
               <li><a href="/about" className="hover:text-gray-800 transition-colors flex items-center gap-2">
                 <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
-                About NepalWatch
+                About Nepliz Store
               </a></li>
               <li><a href="/products" className="hover:text-gray-800 transition-colors flex items-center gap-2">
                 <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
@@ -97,7 +97,7 @@ const Footer = () => {
               <div className='flex gap-4'>
                 {/* Facebook */}
                 <a 
-                  href="https://www.facebook.com/NepalWatchOfficial" 
+                  href="https://www.facebook.com/Nepliz StoreOfficial" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-10 h-10 flex items-center justify-center bg-blue-50 hover:bg-blue-100 rounded-full transition-colors group"
@@ -109,7 +109,7 @@ const Footer = () => {
 
                 {/* Instagram */}
                 <a 
-                  href="https://www.instagram.com/nepalwatch" 
+                  href="https://www.instagram.com/nepliz.store/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-10 h-10 flex items-center justify-center bg-pink-50 hover:bg-pink-100 rounded-full transition-colors group"
@@ -119,7 +119,7 @@ const Footer = () => {
 
                 {/* TikTok */}
                 <a 
-                  href="https://www.tiktok.com/@nepalwatch" 
+                  href="https://www.tiktok.com/@nepliz.store" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-black rounded-full transition-colors group"
@@ -145,7 +145,7 @@ const Footer = () => {
 
                 {/* YouTube */}
                 <a 
-                  href="https://www.youtube.com/@NepalWatch" 
+                  href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-10 h-10 flex items-center justify-center bg-red-50 hover:bg-red-100 rounded-full transition-colors group"
@@ -227,7 +227,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-center md:text-left">
               <p className='text-sm text-gray-500'>
-                © {new Date().getFullYear()} NepalWatch. All Rights Reserved.
+                © {new Date().getFullYear()} Nepliz Store. All Rights Reserved.
               </p>
               <p className='text-xs text-gray-500 mt-1'>
                 Authorized dealer of Swiss, Japanese, and international watch brands in Nepal.

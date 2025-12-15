@@ -8,7 +8,6 @@ const Product = () => {
   const { products, currency, addToCart } = useContext(ShopContext);
   const [productData, setProductData] = useState(null);
   const [image, setImage] = useState('');
-  const [selectedModel, setSelectedModel] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
 
   useEffect(() => {
@@ -17,12 +16,11 @@ const Product = () => {
       setProductData(foundProduct);
       setImage(foundProduct.image[0]);
       if (foundProduct.colors && foundProduct.colors.length > 0) {
-        setSelectedColor(foundProduct.colors[0]); // default to first color
+        setSelectedColor(foundProduct.colors[0]); // default color
       }
     }
   }, [productId, products]);
 
-  // Calculate discount percentage
   const discount =
     productData?.oldPrice && productData.oldPrice > productData.price
       ? Math.round(((productData.oldPrice - productData.price) / productData.oldPrice) * 100)
@@ -50,13 +48,8 @@ const Product = () => {
             ))}
           </div>
 
-          {/* Main Image */}
           <div className="w-full sm:w-[80%] aspect-square relative rounded-md overflow-hidden border border-gray-300">
-            <img
-              className="object-cover w-full h-full"
-              src={image}
-              alt=""
-            />
+            <img src={image} alt="" className="object-cover w-full h-full" />
           </div>
         </div>
 
@@ -64,45 +57,18 @@ const Product = () => {
         <div className="flex-1">
           <h1 className="font-medium text-2xl mt-2">{productData.name}</h1>
 
-          {/* Price Section */}
           <div className="mt-5 flex items-center gap-3">
             {productData.oldPrice && (
-              <span className="text-gray-500 line-through text-lg">
-                {currency}{productData.oldPrice}
-              </span>
+              <span className="text-gray-500 line-through text-lg">{currency}{productData.oldPrice}</span>
             )}
-            <span className="text-3xl font-medium text-red-600">
-              {currency}{productData.price}
-            </span>
-            {discount && (
-              <span className="text-green-600 text-lg font-semibold">
-                {discount}% OFF
-              </span>
-            )}
+            <span className="text-3xl font-medium text-red-600">{currency}{productData.price}</span>
+            {discount && <span className="text-green-600 text-lg font-semibold">{discount}% OFF</span>}
           </div>
 
           <p className="mt-5 text-gray-500 md:w-4/5">{productData.description}</p>
 
-          {/* Model Selection */}
-          {productData.models && productData.models.length > 0 && (
-            <div className="my-4">
-              <label htmlFor="model-select" className="block mb-2 font-semibold">Select Model</label>
-              <select
-                id="model-select"
-                value={selectedModel}
-                onChange={(e) => setSelectedModel(e.target.value)}
-                className="border border-purple-500 px-4 py-2 rounded-md w-30"
-              >
-                <option value="" disabled>Select Model...</option>
-                {productData.models.map((model, index) => (
-                  <option key={index} value={model}>{model}</option>
-                ))}
-              </select>
-            </div>
-          )}
-
           {/* Color Selection */}
-        {/*  {productData.colors && productData.colors.length > 0 && (
+          {productData.colors && productData.colors.length > 0 && (
             <div className="my-4">
               <p className="block mb-2 font-semibold">Select Color</p>
               <div className="flex gap-2 flex-wrap">
@@ -118,18 +84,16 @@ const Product = () => {
                 ))}
               </div>
             </div>
-          )} */}
+          )}
 
           {/* Add to Cart */}
-              <button
-           onClick={() => addToCart(productData._id, selectedModel, selectedColor)}
-           disabled={!selectedModel} // only model is required
-          className={`bg-black text-white px-8 py-3 text-sm mt-4 ${!selectedModel ? 'opacity-50 cursor-not-allowed' : 'active:bg-gray-700'}`}
-            >
-           ADD TO CART
-        </button>
+          <button
+            onClick={() => addToCart(productData._id, null)} // model handled in ShopContext
+            className="bg-black text-white px-8 py-3 text-sm mt-4 active:bg-gray-700"
+          >
+            ADD TO CART
+          </button>
 
-          {/* Extra Info */}
           <hr className="mt-8 sm:w-4/5" />
           <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">
             <p>100% Original product.</p>
@@ -138,7 +102,6 @@ const Product = () => {
         </div>
       </div>
 
-      {/* Related Products */}
       <RelatedProducts category={productData.category} subCategory={productData.subCategory} />
     </div>
   ) : (

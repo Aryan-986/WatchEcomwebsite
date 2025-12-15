@@ -37,39 +37,6 @@ const HeroBanner = () => {
       </div>
 
       {/* 2. Split Banner Image Section (Men's & Women's) */}
-      <div className="container mx-auto px-4 md:px-7">
-        <div className="flex flex-col md:flex-row gap-4 md:gap-7">
-          
-          {categories.map((item, index) => (
-            <Link
-              key={index}
-              to={item.link}
-              onClick={() => window.scrollTo(0, 0)}
-              // The w-full makes it full width on mobile, w-1/2 makes them side-by-side on desktop
-              className="w-full md:w-1/2 relative h-[55vh] overflow-hidden group"
-            >
-              <img
-                src={item.img}
-                alt={item.label}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-              />
-              
-              {/* Dark Overlay for Text Readability */}
-              <div className="absolute inset-0 bg-black/40 transition-colors duration-500 group-hover:bg-black/20" />
-
-              {/* Text Label and Explore Button */}
-              <div className="absolute bottom-6 left-6 text-white text-left z-10">
-                <p className="text-2xl font-bold mb-1 tracking-wide">
-                  {item.label}
-                </p>
-                <p className="text-sm tracking-widest uppercase font-semibold">
-                  EXPLORE
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
       
     </div>
   );
