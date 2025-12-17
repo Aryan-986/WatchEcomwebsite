@@ -21,6 +21,8 @@ const App = () => {
     <div className='w-full p-[5px]'>
       <ToastContainer />
       <Navbar />
+
+      <div className='pt-24'>
       <SearchBar />
       <Routes>
         <Route path='/' element={<Home />} />
@@ -34,6 +36,8 @@ const App = () => {
         <Route path='/orders' element={<Orders />} />
         <Route path='/verify' element={<Verify />} />
       </Routes>
+      </div>
+
       <Footer />
     </div>
   )
