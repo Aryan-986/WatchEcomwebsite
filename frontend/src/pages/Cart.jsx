@@ -5,9 +5,7 @@ import { assets } from '../assets/assets';
 import CartTotal from '../components/CartTotal';
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity, navigate } =
-    useContext(ShopContext);
-
+  const { products, currency, cartItems, updateQuantity, navigate } = useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
 
   useEffect(() => {
@@ -22,13 +20,12 @@ const Cart = () => {
         if (quantity > 0) {
           tempData.push({
             _id: productId,
-            model: key === 'default' ? null : key, // 👈 IMPORTANT
+            model: key,
             quantity
           });
         }
       }
     }
-
     setCartData(tempData);
   }, [cartItems, products]);
 
@@ -40,9 +37,7 @@ const Cart = () => {
 
       <div>
         {cartData.map((item, index) => {
-          const productData = products.find(
-            (product) => product._id === item._id
-          );
+          const productData = products.find((product) => product._id === item._id);
 
           if (!productData) return null;
 
@@ -52,26 +47,16 @@ const Cart = () => {
               className="py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4"
             >
               <div className="flex items-start gap-6">
-                <img
-                  className="w-16 sm:w-20"
-                  src={productData.image[0]}
-                  alt=""
-                />
+                <img className="w-16 sm:w-20 rounded" src={productData.image[0]} alt="" />
 
                 <div>
-                  <p className="text-xs sm:text-lg font-medium">
-                    {productData.name}
-                  </p>
-
+                  <p className="text-xs sm:text-lg font-medium">{productData.name}</p>
                   <div className="flex items-center gap-5 mt-2">
-                    <p>
-                      {currency}
-                      {productData.price}
-                    </p>
-
-                    {/* ✅ SHOW MODEL ONLY IF EXISTS */}
-                    {item.model && (
-                      <p className="px-2 sm:px-3 sm:py-1 border bg-slate-50">
+                    <p>{currency}{productData.price}</p>
+                    
+                    {/* Only show the model badge if it's NOT our 'None' placeholder */}
+                    {item.model && item.model !== 'None' && (
+                      <p className="px-2 sm:px-3 sm:py-1 border bg-slate-50 text-xs sm:text-sm">
                         {item.model}
                       </p>
                     )}
@@ -86,18 +71,17 @@ const Cart = () => {
                 className="border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1"
                 onChange={(e) => {
                   const val = Number(e.target.value);
-                  if (!val || val < 1) return;
-                  updateQuantity(item._id, item.model || 'default', val);
+                  if (val > 0) {
+                    updateQuantity(item._id, item.model, val);
+                  }
                 }}
               />
 
               <img
                 src={assets.bin_icon}
-                alt=""
-                className="w-4 mr-4 sm:w-5 cursor-pointer"
-                onClick={() =>
-                  updateQuantity(item._id, item.model || 'default', 0)
-                }
+                alt="Remove"
+                className="w-4 mr-4 sm:w-5 cursor-pointer hover:opacity-70 transition"
+                onClick={() => updateQuantity(item._id, item.model, 0)}
               />
             </div>
           );
@@ -110,7 +94,7 @@ const Cart = () => {
           <div className="w-full text-end">
             <button
               onClick={() => navigate('/place-order')}
-              className="bg-black text-white text-sm my-8 px-8 py-3"
+              className="bg-black text-white text-sm my-8 px-8 py-3 active:bg-gray-700 transition"
             >
               PROCEED TO CHECKOUT
             </button>

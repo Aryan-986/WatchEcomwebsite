@@ -6,7 +6,6 @@ import axios from 'axios';
 export const ShopContext = createContext();
 
 const ShopContextProvider = (props) => {
-
     const currency = 'Rs';
     const delivery_fee = 100;
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -17,23 +16,27 @@ const ShopContextProvider = (props) => {
     const [token, setToken] = useState('');
     const navigate = useNavigate();
 
-    const addToCart = async (itemId, model = 'default') => {
+    const addToCart = async (itemId, model) => {
+        // If the admin didn't provide models, we use 'None' as the key
+        let modelKey = model || 'None';
+
         let cartData = structuredClone(cartItems);
       
         if (cartData[itemId]) {
-          cartData[itemId][model] = (cartData[itemId][model] || 0) + 1;
+          cartData[itemId][modelKey] = (cartData[itemId][modelKey] || 0) + 1;
         } else {
           cartData[itemId] = {};
-          cartData[itemId][model] = 1;
+          cartData[itemId][modelKey] = 1;
         }
       
         setCartItems(cartData);
+        toast.success("Added to cart");
       
         if (token) {
           try {
             await axios.post(
               backendUrl + '/api/cart/add',
-              { itemId, model },
+              { itemId, model: modelKey },
               { headers: { token } }
             );
           } catch (error) {
@@ -41,8 +44,7 @@ const ShopContextProvider = (props) => {
             toast.error(error.message);
           }
         }
-      };
-      
+    };
 
     const getCartCount = () => {
         let totalCount = 0;
@@ -120,13 +122,11 @@ const ShopContextProvider = (props) => {
 
     useEffect(() => {
         if (!token && localStorage.getItem('token')) {
-            setToken(localStorage.getItem('token'));
-            getUserCart(localStorage.getItem('token'));
+            const storedToken = localStorage.getItem('token');
+            setToken(storedToken);
+            getUserCart(storedToken);
         }
-        if (token) {
-            getUserCart(token);
-        }
-    }, [token]);
+    }, []);
 
     const value = {
         products, currency, delivery_fee,
